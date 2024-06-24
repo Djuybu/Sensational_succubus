@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App {
   text-align: center;
 }
@@ -35,4 +39,44 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.custom-menu {
+  background-color: black; /* Màu nền mặc định */
+  color: white; /* Màu chữ mặc định */
+}
+
+.custom-menu .ant-menu-title-content {
+  color: white;
+}
+
+.custom-menu .ant-menu-item:hover {
+  background-color: white; /* Màu nền khi hover */
+  color: black; /* Màu chữ khi hover */
+}
+
+
+.custom-menu .ant-menu-item-selected {
+  background-color: white; /* Màu nền khi được chọn */
+}
+
+.custom-menu .ant-menu-item-selected .ant-menu-title-content {
+  color: black; /* Màu chữ khi được chọn */
+}
+
+.custom-menu .ant-menu-item-selected .anticon {
+  color: black !important;
+}
+
+.custom-menu .ant-menu-item-selected:hover {
+  background-color: white; /* Màu nền khi được chọn và hover */
+  color: black; /* Màu chữ khi được chọn và hover */
+}
+
+.custom-menu .ant-menu-sub .ant-menu-item .anticon {
+  color: white !important;
+}
+
+.custom-menu .ant-menu-sub .ant-menu-item-selected .anticon {
+  color: black !important;
 }
