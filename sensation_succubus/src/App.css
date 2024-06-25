@@ -46,8 +46,10 @@
   color: white; /* Màu chữ mặc định */
 }
 
+
 .custom-menu .ant-menu-title-content {
   color: white;
+  align-items: center;
 }
 
 .custom-menu .ant-menu-item:hover {
@@ -79,4 +81,34 @@
 
 .custom-menu .ant-menu-sub .ant-menu-item-selected .anticon {
   color: black !important;
+}
+
+.thread-bar {
+  background-color: black ;
+}
+
+.thread-bar .ant-menu-item {
+  background-color: #3d494e;
+  border-radius: 20px !important;
+  margin: 5px !important; 
+  font-size: 14px;
+}
+
+.thread-bar .ant-menu-item::after {
+  border-bottom: none !important;
+}
+
+.thread-bar .ant-menu-item-selected {
+  background-color:#d93900 !important;
+  border: none;
+  font-weight: 500;
+}
+
+
+.thread-bar .ant-menu-item .ant-menu-item-icon {
+  color: white;
+}
+
+.thread-bar .ant-menu-item .ant-menu-title-content {
+  color: white;
 }

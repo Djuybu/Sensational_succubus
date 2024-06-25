@@ -11,6 +11,10 @@ import {
   HomeOutlined,
   RiseOutlined,
   HistoryOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+  CloudDownloadOutlined,
+  ShareAltOutlined,
 } from "@ant-design/icons";
 import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is included
 import Sider from "antd/es/layout/Sider";
@@ -119,6 +123,28 @@ const items2 = siderParentConfig.map((section, index) => {
   };
 });
 
+const threadBar = [
+  {
+    key: "upvote",
+    label: "6.9k",
+    icon: <ArrowUpOutlined />,
+  },
+  {
+    key: "downvote",
+    icon: <ArrowDownOutlined />,
+  },
+  {
+    key: "save",
+    label: "save",
+    icon: <CloudDownloadOutlined />,
+  },
+  {
+    key: "share",
+    label: "share",
+    icon: <ShareAltOutlined />,
+  },
+];
+
 const HomePage = () => {
   return (
     <Layout>
@@ -186,6 +212,11 @@ const HomePage = () => {
               egestas gravida nulla, vel hendrerit mi tincidunt eu.
             </div>
             <img src={test_drive}></img>
+            <Menu
+              className="thread-bar"
+              mode="horizontal"
+              items={threadBar}
+            ></Menu>
           </div>
         </Content>
       </Layout>
