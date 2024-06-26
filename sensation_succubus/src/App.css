@@ -91,11 +91,15 @@
   background-color: #3d494e;
   border-radius: 20px !important;
   margin: 5px !important; 
-  font-size: 14px;
+  font-size: 19px;
 }
 
 .thread-bar .ant-menu-item::after {
   border-bottom: none !important;
+}
+
+.thread-bar .ant-menu-item .ant-menu-item-icon {
+  font-size: 18px;
 }
 
 .thread-bar .ant-menu-item-selected {
@@ -111,4 +115,39 @@
 
 .thread-bar .ant-menu-item .ant-menu-title-content {
   color: white;
+}
+
+.ava_menu {
+  width: 15%;
+  position: absolute;
+  background-color:#282c34;
+  top: 20;
+  right: 0;
+  margin-right: 10px;
+  border-radius: 10px;
+}
+
+.ava_menu .ant-menu-title-content div {
+  color: white;
+  padding: 0.1rem !important;
+}
+
+.ava_menu .ant-menu-title-content {
+  color: white;
+  height: 40px;
+}
+
+.ava_menu .ant-menu-item img {
+  max-width: 2rem;
+  max-height: 2rem;
+  width: auto;
+  height: auto;
+}
+
+.ava-menu .ant-menu-item-selected {
+  background-color: #3d494e !important;
+}
+
+.ava-menu .ant-menu-item .anticon svg {
+  font-size: 2.5rem !important;
 }

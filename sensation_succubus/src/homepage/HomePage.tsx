@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./resources/logo.png";
 import demo_ava from "./resources/ava_blue.png";
-import test_drive from "./resources/test_drive.png";
-import { Layout, Menu, Input, MenuProps } from "antd";
+import test_drive from "../resources/logo.png";
+import avatar from "./resources/yeezus.jpg";
+import { Layout, Menu, Input, MenuProps, Avatar } from "antd";
 import {
   PlusOutlined,
   CommentOutlined,
@@ -15,10 +16,14 @@ import {
   ArrowDownOutlined,
   CloudDownloadOutlined,
   ShareAltOutlined,
+  LogoutOutlined,
+  LoginOutlined,
 } from "@ant-design/icons";
 import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is included
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
+import ThreadProp from "./items/ThreadProps.tsx";
+import { Thread } from "./items/ThreadProps.tsx";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -29,16 +34,33 @@ const onSearch = (value) => {
 
 const headerItem = [
   {
-    key: "sub1",
+    key: "add",
     icon: <PlusOutlined style={{ color: "white" }} />,
   },
   {
-    key: "sub2",
+    key: "chat",
     icon: <CommentOutlined style={{ color: "white" }} />,
   },
   {
-    key: "sub3",
+    key: "notification",
     icon: <BellOutlined style={{ color: "white" }} />,
+  },
+];
+
+const avatarItem = [
+  {
+    key: "bio",
+    icon: <img src={demo_ava} className="w-20 rounded-2xl" />,
+    label: (
+      <div className="flex flex-col justify-center custom-spacing">
+        <div>r/Demo</div>
+      </div>
+    ),
+  },
+  {
+    key: "logout",
+    icon: <LogoutOutlined style={{ color: "white" }} />,
+    label: "Log out",
   },
 ];
 
@@ -123,29 +145,39 @@ const items2 = siderParentConfig.map((section, index) => {
   };
 });
 
-const threadBar = [
-  {
-    key: "upvote",
-    label: "6.9k",
-    icon: <ArrowUpOutlined />,
-  },
-  {
-    key: "downvote",
-    icon: <ArrowDownOutlined />,
-  },
-  {
-    key: "save",
-    label: "save",
-    icon: <CloudDownloadOutlined />,
-  },
-  {
-    key: "share",
-    label: "share",
-    icon: <ShareAltOutlined />,
-  },
-];
-
 const HomePage = () => {
+  const [avaMenu, setAvaMenu] = useState<boolean>(false);
+  const [threads, setThreads] = useState<Thread[]>([
+    {
+      id: "0",
+      user: "r/demo",
+      userAva: demo_ava, // Make sure demo_ava is defined
+      title: "This is the title of the post",
+      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+libero nec justo mollis convallis. Nam at neque ac ipsum ultrices
+tincidunt. Quisque ut libero eget lorem malesuada tincidunt. Fusce
+convallis purus quis nisi vehicula, in aliquet justo tempus.
+Vestibulum ac justo vel nisi vehicula consectetur in eu ligula.
+Sed id velit eu sapien eleifend interdum. Quisque fringilla
+ultricies sapien, at vestibulum est condimentum sit amet. Maecenas
+vitae dapibus justo. Vivamus accumsan dui et nisi sagittis, quis
+faucibus purus ullamcorper. Nam non diam nec sapien consequat
+facilisis. Phasellus lobortis, ex eget luctus molestie, odio felis
+suscipit sem, et scelerisque orci arcu a dolor. Integer gravida
+turpis in leo varius, nec aliquam risus dapibus. Etiam fringilla
+sapien non ex tincidunt, a gravida purus suscipit. Pellentesque
+egestas gravida nulla, vel hendrerit mi tincidunt eu.`,
+      image: test_drive, // Make sure test_drive is defined
+      upvotes: "6.9k",
+      downvotes: "1.2k",
+    },
+  ]);
+
+  //load thread when start the session here
+  useEffect(() => {
+    // setThreads();
+  }, []);
+
   return (
     <Layout>
       <Header
@@ -167,57 +199,41 @@ const HomePage = () => {
           enterButton={<SearchOutlined />}
           size="large"
           onSearch={onSearch}
-          className="ml-auto"
+          className="ml-auto w-85"
         />
         <Menu
           mode="horizontal"
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["sub1"]}
           style={{ height: "100%", backgroundColor: "black", color: "white" }}
+          className="header"
           items={headerItem}
+        />
+        <Avatar
+          style={{
+            maxHeight: "2rem",
+            maxWidth: "2rem",
+            width: "auto",
+            height: "auto",
+          }}
+          onClick={(e) => setAvaMenu(true)}
+          src={demo_ava}
         />
       </Header>
       <Layout>
         <Sider className="" style={{ background: "black" }}>
           <Menu
             mode="inline"
-            defaultOpenKeys={["sub1"]}
+            defaultOpenKeys={["Custom feed", "Recent", "Community"]}
             className="custom-menu"
             items={[...siderSingleItem, ...items2]}
           />
         </Sider>
+        {avaMenu ? (
+          <Menu mode="inline" items={avatarItem} className="ava_menu" />
+        ) : (
+          <></>
+        )}
         <Content style={{ background: "black" }}>
-          <div className="py-5 px-5">
-            <div className="flex items-center">
-              <img className="w-10 rounded-xl" src={demo_ava} />
-              <div className="text-white text-sm px-2">Hello</div>
-            </div>
-            <div className="text-white text-3xl py-3 font-semibold">
-              This is the title of the post
-            </div>
-            <div className="text-white text-base mr-20">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a
-              libero nec justo mollis convallis. Nam at neque ac ipsum ultrices
-              tincidunt. Quisque ut libero eget lorem malesuada tincidunt. Fusce
-              convallis purus quis nisi vehicula, in aliquet justo tempus.
-              Vestibulum ac justo vel nisi vehicula consectetur in eu ligula.
-              Sed id velit eu sapien eleifend interdum. Quisque fringilla
-              ultricies sapien, at vestibulum est condimentum sit amet. Maecenas
-              vitae dapibus justo. Vivamus accumsan dui et nisi sagittis, quis
-              faucibus purus ullamcorper. Nam non diam nec sapien consequat
-              facilisis. Phasellus lobortis, ex eget luctus molestie, odio felis
-              suscipit sem, et scelerisque orci arcu a dolor. Integer gravida
-              turpis in leo varius, nec aliquam risus dapibus. Etiam fringilla
-              sapien non ex tincidunt, a gravida purus suscipit. Pellentesque
-              egestas gravida nulla, vel hendrerit mi tincidunt eu.
-            </div>
-            <img src={test_drive}></img>
-            <Menu
-              className="thread-bar"
-              mode="horizontal"
-              items={threadBar}
-            ></Menu>
-          </div>
+          <ThreadProp threads={threads} />
         </Content>
       </Layout>
     </Layout>
