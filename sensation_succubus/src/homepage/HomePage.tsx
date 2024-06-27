@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import logo from "./resources/logo.png";
+import logo from "../resources/logo.png";
 import demo_ava from "./resources/ava_blue.png";
-import test_drive from "../resources/logo.png";
+import test_drive from "./resources/test_drive.png";
 import avatar from "./resources/yeezus.jpg";
 import { Layout, Menu, Input, MenuProps, Avatar } from "antd";
 import {

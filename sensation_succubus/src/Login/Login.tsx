@@ -2,6 +2,10 @@ import React from "react";
 import logo from "../resources/logo.png";
 import { FacebookFilled, DiscordFilled } from "@ant-design/icons";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { postLogin } from "../items/axios.ts";
+import { setId } from "../items/redux/session.reducer.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../items/redux/store.ts";
 
 interface Login {
   username: string;
@@ -15,10 +19,17 @@ const Login = () => {
     formState: { errors },
   } = useForm<Login>();
 
-  const onSubmit: SubmitHandler<Login> = (data) => {
-    console.log(data);
+  const dispatch = useDispatch();
 
-    //post data to the server, smh
+  const onSubmit: SubmitHandler<Login> = async (data) => {
+    try {
+      const response = await postLogin(data.username, data.password);
+      console.log(response);
+
+      dispatch(setId(response));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
