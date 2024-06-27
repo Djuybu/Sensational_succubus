@@ -1,9 +1,24 @@
 import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+interface Signup {
+  username: string;
+  password: string;
+  email: string;
+  confirmPassword: string;
+}
 
 const Signup = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Signup>();
+
+  const onSubmit: SubmitHandler<Signup> = async (data) => {};
   return (
     <div className="flex items-center justify-center h-screen bg-black">
-      <div className="bg-gray-500 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <form className="bg-gray-500 shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div className="mb-4">
           <label
             className="block text-white text-sm font-bold mb-2"
@@ -16,6 +31,7 @@ const Signup = () => {
             id="username"
             type="text"
             placeholder="Username"
+            {...register("username", { required: "true" })}
           />
         </div>
         <div className="mb-4">
@@ -30,6 +46,7 @@ const Signup = () => {
             id="email"
             type="email"
             placeholder="Email"
+            {...register("email", { required: "true" })}
           />
         </div>
         <div className="mb-4">
@@ -44,6 +61,7 @@ const Signup = () => {
             id="password"
             type="password"
             placeholder="********"
+            {...register("password", { required: "true" })}
           />
         </div>
         <div className="mb-6">
@@ -58,17 +76,31 @@ const Signup = () => {
             id="confirm-password"
             type="password"
             placeholder="********"
+            {...register("confirmPassword", { required: "true" })}
           />
         </div>
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button"
+            type="submit"
           >
             Sign Up
           </button>
+          {errors.password?.type === "required" && (
+            <div> Password is required</div>
+          )}
+
+          {errors.email?.type === "required" && <div>Email is required</div>}
+
+          {errors.username?.type === "required" && (
+            <div>Username is required</div>
+          )}
+
+          {errors.password !== errors.confirmPassword && (
+            <div>Your password is not correct!</div>
+          )}
         </div>
-      </div>
+      </form>
     </div>
   );
 };

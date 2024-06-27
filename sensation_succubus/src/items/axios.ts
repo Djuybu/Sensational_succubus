@@ -23,3 +23,23 @@ export const postLogin = async (username: string, password: string) => {
         console.log(error);
     }
 }
+
+export const postSignup = async (data) => {
+    try {
+        const response = await axios.post(url + "user/signup", {
+            username: data.username,
+            password: data.password,
+            email: data.email
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            }
+        })
+        if(response.status === 200) {
+            return true;
+        }
+    } catch (error) {
+        
+    }
+}
