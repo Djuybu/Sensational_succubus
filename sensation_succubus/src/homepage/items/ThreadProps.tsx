@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import React from "react";
+import { postAddUpvote } from "../../items/axios";
 
 export interface Thread {
   id: string;
@@ -27,6 +28,7 @@ const ThreadProp = (props: any) => {
       key: "upvote",
       label: "6.9k",
       icon: <ArrowUpOutlined />,
+      onclick: postAddUpvote,
     },
     {
       key: "downvote",
