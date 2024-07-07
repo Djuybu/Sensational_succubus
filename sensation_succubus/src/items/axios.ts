@@ -5,8 +5,9 @@ const url = "http://localhost:8080/api/"
 //post api calls
 
 //post username and password for authentication
-export const postLogin = async (username: string, password: string) => {
+export const postLogin = async(username: string, password: string) => {
     try {
+        //
         const response = await axios.post(url + "user/login",  {
             username: username,
             password: password,
@@ -15,7 +16,7 @@ export const postLogin = async (username: string, password: string) => {
             "Access-Control-Allow-Origin": "*", //bypassing CORS
         }})
         if(response.status.valueOf() === 200) {
-            const data = response.data //session id
+            const data = response.data.token; //session id
             return data;
         }
         
@@ -34,6 +35,7 @@ export const postSignup = async (data) => {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
+                "Authorization": data.token,
             }
         })
         if(response.status === 200) {

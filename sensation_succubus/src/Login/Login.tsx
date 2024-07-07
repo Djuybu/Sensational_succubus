@@ -6,12 +6,22 @@ import { postLogin } from "../items/axios.ts";
 import { setId } from "../items/redux/session.reducer.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../items/redux/store.ts";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+import { jwtDecode } from "jwt-decode";
 
 interface Login {
   username: string;
   password: string;
 }
+
+interface DecodedToken {
+  exp: number;
+  [key: string]: any; // Additional properties can be present
+}
+
 const Login = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -19,17 +29,26 @@ const Login = () => {
     formState: { errors },
   } = useForm<Login>();
 
+  const cookies = new Cookies();
   const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<Login> = async (data) => {
     try {
       const response = await postLogin(data.username, data.password);
-      console.log(response);
-
-      dispatch(setId(response));
+      storeToCookie(response);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const storeToCookie = (token) => {
+    const decoded = jwtDecode<DecodedToken>(token);
+    const expires = new Date(decoded.exp * 1000);
+    cookies.set("jwt Authoriation", token, {
+      expires: expires,
+      path: "/",
+    });
   };
 
   return (

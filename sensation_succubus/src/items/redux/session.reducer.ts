@@ -1,11 +1,11 @@
 import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 
 interface SessionState {
-    id: string | null,
+    token: string | null,
 }
 
 const initialState: SessionState = {
-    id: null,
+    token: null,
 }
 
 export const setId = createAction<string | null>('session/setId');
@@ -13,7 +13,7 @@ export const setId = createAction<string | null>('session/setId');
 const sessionReducer = createReducer(initialState, builder => {
     builder
         .addCase(setId, (state, action: PayloadAction<string | null>) => {
-            state.id = action.payload;
+            state.token = action.payload;
         })
 })
 
