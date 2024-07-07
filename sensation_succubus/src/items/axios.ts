@@ -1,7 +1,9 @@
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 const url = "http://localhost:8080/api/"
 
+const cookies = new Cookies();
 //post api calls
 
 //post username and password for authentication
@@ -35,7 +37,6 @@ export const postSignup = async (data) => {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
-                "Authorization": data.token,
             }
         })
         if(response.status === 200) {
@@ -43,5 +44,21 @@ export const postSignup = async (data) => {
         }
     } catch (error) {
         
+    }
+}
+
+export const postAddUpvote = async() => {
+    const token = cookies.get("jwtAuthorization");
+    try {
+        const response = await axios.post(url + "thread/upvote/add", {
+            something: "bla bla"
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${token}`
+            }
+        })
+    } catch (error) {
+        console.log(error);
     }
 }
