@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../resources/logo.png";
-import demo_ava from "./resources/ava_blue.png";
-import test_drive from "./resources/test_drive.png";
+import demo_ava from "../resources/ava_blue.png";
+import test_drive from "../resources/test_drive.png";
 import { Layout, Menu, Input, Avatar } from "antd";
 import {
   PlusOutlined,
@@ -16,11 +16,12 @@ import {
 import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is included
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
-import ThreadProp from "./items/ThreadProps.tsx";
-import { Thread } from "./items/ThreadProps.tsx";
-import SubForm from "./items/SubForm.tsx";
+import ThreadProp from "../items/ThreadProps.tsx";
+import { Thread } from "../items/ThreadProps.tsx";
+import SubForm from "../items/SubForm.tsx";
 import { Sub } from "../items/entity/Sub.ts";
 import { getRecentUpdatedSub } from "../items/axios.ts";
+import Subreddit from "../Subreddit/Subreddit.tsx";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -91,6 +92,14 @@ const HomePage: React.FC = () => {
   const [avaMenu, setAvaMenu] = useState<boolean>(false);
   const [siderSub, setSiderSub] = useState<SiderSub[]>([]);
   const [isAddingSub, setIsAddingSub] = useState(false);
+  const [isSub, setIsSub] = useState(false);
+  const [currentSub, setCurrentSub] = useState<Sub>({
+    key: -1,
+    name: "",
+    description: "",
+    rules: "",
+    imageURL: "",
+  });
   const [threads, setThreads] = useState<Thread[]>([
     {
       id: "0",
@@ -209,6 +218,7 @@ const HomePage: React.FC = () => {
                   style={{ width: 16, height: 16 }}
                 />
               ),
+              onClick: () => setSub(sub),
             })),
           ],
         };
@@ -220,7 +230,17 @@ const HomePage: React.FC = () => {
   }, [siderSub]);
 
   const [sider, setSider] = useState(items2);
-
+  const setSub = (children: Sub) => {
+    console.log(children);
+    setIsSub(true);
+    setCurrentSub({
+      key: children.key,
+      name: children.name,
+      description: children.description,
+      rules: children.rules,
+      imageURL: children.imageURL,
+    });
+  };
   return (
     <>
       {isAddingSub && <SubForm setIsAddingSub={setIsAddingSub} />}
@@ -265,18 +285,24 @@ const HomePage: React.FC = () => {
         </Header>
         <Layout>
           <Sider className="" style={{ background: "black" }}>
-            <Menu
-              mode="inline"
-              defaultOpenKeys={["Custom feed", "Recent", "Community"]}
-              className="custom-menu"
-              items={[...siderSingleItem, ...sider]} // Use the updated `sider` state here
-            />
+            {
+              <Menu
+                mode="inline"
+                defaultOpenKeys={["Custom feed", "Recent", "Community"]}
+                className="custom-menu"
+                items={[...siderSingleItem, ...sider]} // Use the updated `sider` state here
+              />
+            }
           </Sider>
           {avaMenu && (
             <Menu mode="inline" items={avatarItem} className="ava_menu" />
           )}
           <Content style={{ background: "black" }}>
-            <ThreadProp threads={threads} />
+            {isSub ? (
+              <Subreddit sub={currentSub} />
+            ) : (
+              <ThreadProp threads={threads} />
+            )}
           </Content>
         </Layout>
       </Layout>

@@ -1,6 +1,6 @@
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { postAddCommunity } from "../../items/axios.ts";
+import { postAddCommunity } from "./axios.ts";
 import { CloseOutlined } from "@ant-design/icons";
 
 type SubFormProps = {

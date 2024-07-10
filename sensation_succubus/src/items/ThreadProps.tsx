@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import React from "react";
-import { postAddUpvote } from "../../items/axios.ts";
+import { postAddUpvote } from "../items/axios.ts";
 
 export interface Thread {
   id: string;
