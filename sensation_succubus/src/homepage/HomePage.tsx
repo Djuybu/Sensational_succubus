@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import logo from "../resources/logo.png";
 import demo_ava from "./resources/ava_blue.png";
 import test_drive from "./resources/test_drive.png";
-import avatar from "./resources/yeezus.jpg";
-import { Layout, Menu, Input, MenuProps, Avatar } from "antd";
+import { Layout, Menu, Input, Avatar } from "antd";
 import {
   PlusOutlined,
   CommentOutlined,
@@ -12,12 +11,7 @@ import {
   HomeOutlined,
   RiseOutlined,
   HistoryOutlined,
-  ArrowUpOutlined,
-  ArrowDownOutlined,
-  CloudDownloadOutlined,
-  ShareAltOutlined,
   LogoutOutlined,
-  LoginOutlined,
 } from "@ant-design/icons";
 import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is included
 import Sider from "antd/es/layout/Sider";
@@ -31,7 +25,7 @@ import { getRecentUpdatedSub } from "../items/axios.ts";
 const { Header } = Layout;
 const { Search } = Input;
 
-const onSearch = (value) => {
+const onSearch = (value: string) => {
   console.log(value);
 };
 
@@ -53,7 +47,7 @@ const headerItem = [
 const avatarItem = [
   {
     key: "bio",
-    icon: <img src={demo_ava} className="w-20 rounded-2xl" />,
+    icon: <img src={demo_ava} className="w-20 rounded-2xl" alt="Avatar" />,
     label: (
       <div className="flex flex-col justify-center custom-spacing">
         <div>r/Demo</div>
@@ -85,7 +79,44 @@ const siderSingleItem = [
   },
 ];
 
-const HomePage = () => {
+interface SiderSub {
+  key: number;
+  name: string;
+  description: string;
+  rules: string;
+  imageURL: string;
+}
+
+const HomePage: React.FC = () => {
+  const [avaMenu, setAvaMenu] = useState<boolean>(false);
+  const [siderSub, setSiderSub] = useState<SiderSub[]>([]);
+  const [isAddingSub, setIsAddingSub] = useState(false);
+  const [threads, setThreads] = useState<Thread[]>([
+    {
+      id: "0",
+      user: "r/demo",
+      userAva: demo_ava,
+      title: "This is the title of the post",
+      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+      libero nec justo mollis convallis. Nam at neque ac ipsum ultrices
+      tincidunt. Quisque ut libero eget lorem malesuada tincidunt. Fusce
+      convallis purus quis nisi vehicula, in aliquet justo tempus.
+      Vestibulum ac justo vel nisi vehicula consectetur in eu ligula.
+      Sed id velit eu sapien eleifend interdum. Quisque fringilla
+      ultricies sapien, at vestibulum est condimentum sit amet. Maecenas
+      vitae dapibus justo. Vivamus accumsan dui et nisi sagittis, quis
+      faucibus purus ullamcorper. Nam non diam nec sapien consequat
+      facilisis. Phasellus lobortis, ex eget luctus molestie, odio felis
+      suscipit sem, et scelerisque orci arcu a dolor. Integer gravida
+      turpis in leo varius, nec aliquam risus dapibus. Etiam fringilla
+      sapien non ex tincidunt, a gravida purus suscipit. Pellentesque
+      egestas gravida nulla, vel hendrerit mi tincidunt eu.`,
+      image: test_drive,
+      upvotes: "6.9k",
+      downvotes: "1.2k",
+    },
+  ]);
+
   const siderParentConfig = [
     {
       label: "Custom feed",
@@ -101,7 +132,7 @@ const HomePage = () => {
       children: [
         {
           label: "R/xamlol",
-          icon: "./resources/ava_blue.png",
+          icon: demo_ava,
         },
       ],
     },
@@ -128,7 +159,6 @@ const HomePage = () => {
       children: section.children.map((subsection, j) => {
         const subKey = `${keys[index]}-${j + 1}`;
 
-        // Check if icon is a string and matches "PlusOutlined"
         if (subsection.icon === "PlusOutlined") {
           return {
             key: subKey,
@@ -153,42 +183,6 @@ const HomePage = () => {
     };
   });
 
-  const [avaMenu, setAvaMenu] = useState<boolean>(false);
-  const [sider, setSider] = useState<any>(items2);
-  const [siderSub, setSiderSub] = useState<Sub[]>();
-  const [isAddingSub, setIsAddingSub] = useState(false);
-  const [threads, setThreads] = useState<Thread[]>([
-    {
-      id: "0",
-      user: "r/demo",
-      userAva: demo_ava, // Make sure demo_ava is defined
-      title: "This is the title of the post",
-      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-      libero nec justo mollis convallis. Nam at neque ac ipsum ultrices
-      tincidunt. Quisque ut libero eget lorem malesuada tincidunt. Fusce
-      convallis purus quis nisi vehicula, in aliquet justo tempus.
-      Vestibulum ac justo vel nisi vehicula consectetur in eu ligula.
-      Sed id velit eu sapien eleifend interdum. Quisque fringilla
-      ultricies sapien, at vestibulum est condimentum sit amet. Maecenas
-      vitae dapibus justo. Vivamus accumsan dui et nisi sagittis, quis
-      faucibus purus ullamcorper. Nam non diam nec sapien consequat
-      facilisis. Phasellus lobortis, ex eget luctus molestie, odio felis
-      suscipit sem, et scelerisque orci arcu a dolor. Integer gravida
-      turpis in leo varius, nec aliquam risus dapibus. Etiam fringilla
-      sapien non ex tincidunt, a gravida purus suscipit. Pellentesque
-      egestas gravida nulla, vel hendrerit mi tincidunt eu.`,
-      image: test_drive, // Make sure test_drive is defined
-      upvotes: "6.9k",
-      downvotes: "1.2k",
-    },
-  ]);
-
-  //load thread when start the session here
-  useEffect(() => {
-    // setThreads();
-  }, []);
-
-  //load subs with 5 most recent updated subs
   useEffect(() => {
     const fetchRecentUpdatedSub = async () => {
       const recentUpdatedSub = await getRecentUpdatedSub();
@@ -205,7 +199,7 @@ const HomePage = () => {
           ...item,
           children: [
             ...item.children,
-            ...sider.map((sub, index) => ({
+            ...siderSub.map((sub, index) => ({
               key: `Community-${index}`,
               label: sub.name,
               icon: (
@@ -225,9 +219,11 @@ const HomePage = () => {
     setSider(updatedItems);
   }, [siderSub]);
 
+  const [sider, setSider] = useState(items2);
+
   return (
     <>
-      {isAddingSub ? <SubForm setIsAddingSub={setIsAddingSub} /> : null}
+      {isAddingSub && <SubForm setIsAddingSub={setIsAddingSub} />}
       <Layout>
         <Header
           style={{
@@ -263,7 +259,7 @@ const HomePage = () => {
               width: "auto",
               height: "auto",
             }}
-            onClick={(e) => setAvaMenu(true)}
+            onClick={() => setAvaMenu(true)}
             src={demo_ava}
           />
         </Header>
@@ -273,13 +269,11 @@ const HomePage = () => {
               mode="inline"
               defaultOpenKeys={["Custom feed", "Recent", "Community"]}
               className="custom-menu"
-              items={[...siderSingleItem, ...items2]}
+              items={[...siderSingleItem, ...sider]} // Use the updated `sider` state here
             />
           </Sider>
-          {avaMenu ? (
+          {avaMenu && (
             <Menu mode="inline" items={avatarItem} className="ava_menu" />
-          ) : (
-            <></>
           )}
           <Content style={{ background: "black" }}>
             <ThreadProp threads={threads} />

@@ -1,6 +1,7 @@
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { postAddCommunity } from "../../items/axios.ts";
+import { CloseOutlined } from "@ant-design/icons";
 
 type SubFormProps = {
   setIsAddingSub: any;
@@ -34,6 +35,13 @@ const SubForm: React.FC<SubFormProps> = (props: any) => {
         className="bg-black flex flex-col w-1/3 h-3/5 m-auto p-5"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <CloseOutlined
+          style={{ color: "white", position: "relative", bottom: 0, right: 0 }}
+          onClick={(e: React.MouseEvent) => {
+            setIsAddingSub(false);
+          }}
+          // onClick={console.log("OUT!")}
+        />
         <div className="text-white text-center">Add new community</div>
 
         <div className="text-white pb-3">Get a fancy name</div>
