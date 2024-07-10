@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
+import { Sub } from "./entity/Sub";
 
 const url = "http://localhost:8080/api/"
 
@@ -48,7 +49,9 @@ export const postSignup = async (data) => {
 }
 
 export const postAddUpvote = async() => {
-    const token = cookies.get("jwtAuthorization");
+    const token = cookies.get("jwt Authorization");
+    console.log("Token: ", token);
+    
     try {
         const response = await axios.post(url + "thread/upvote/add", {
             something: "bla bla"
@@ -61,4 +64,39 @@ export const postAddUpvote = async() => {
     } catch (error) {
         console.log(error);
     }
+}
+
+export const postAddCommunity = async (data) => {
+    const token = cookies.get("jwt Authorization");
+    try {
+        const response = await axios.post(url + "comms", {
+            name: data.name,
+            description: data.description,
+            rules: data.rules
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${token}`
+            }
+        })
+        if(response.status === 200) {
+            return true;
+        }
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+export const getRecentUpdatedSub = async(): Promise<Sub[]> => {
+    const response: Sub[] = [
+        {
+            key: 1,
+            name: "r/Hello",
+            description: "Welcome to da game",
+            rules: "No shjtting",
+            imageURL: ""
+        },
+    ];
+    return response;
 }

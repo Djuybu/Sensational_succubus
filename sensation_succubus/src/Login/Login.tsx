@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../resources/logo.png";
 import { FacebookFilled, DiscordFilled } from "@ant-design/icons";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -43,9 +43,9 @@ const Login = () => {
   };
 
   const storeToCookie = (token) => {
-    const decoded = jwtDecode<DecodedToken>(token);
-    const expires = new Date(decoded.exp * 1000);
-    cookies.set("jwt Authoriation", token, {
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 1000);
+    cookies.set("jwt Authorization", token, {
       expires: expires,
       path: "/",
     });
