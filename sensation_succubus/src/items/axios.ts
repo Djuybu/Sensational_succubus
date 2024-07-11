@@ -3,6 +3,7 @@ import Cookies from "universal-cookie";
 import { Sub } from "./entity/Sub";
 import { Thread } from "./ThreadProps";
 import { Form } from "../Subreddit/items/PostForm";
+import {Comment} from "./entity/Comment";
 
 const url = "http://localhost:8080/api/"
 
@@ -50,7 +51,7 @@ export const postSignup = async (data) => {
     }
 }
 
-export const postAddUpvote = async() => {
+export const postAddUpvote = async(id: string) => {
     const token = cookies.get("jwt Authorization");
     console.log("Token: ", token);
     
@@ -118,6 +119,18 @@ export const getRecentUpdatedSub = async(): Promise<Sub[]> => {
     return response;
 }
 
+export const postReplyComment = async (childOf: string, body: string) => {
+    try {
+        const response = await axios.post(url + "comment/add", {
+            childOf: childOf,
+            body: body
+        })
+        return response.status === 200;
+    } catch (error) {
+        
+    }
+}
+
 //lấy post dựa trên id
 export const getPostFromSub = async(id: string) => {
     // const threads: Thread[] = []
@@ -155,3 +168,67 @@ export const getPostFromSub = async(id: string) => {
       downvotes: "1.2k",
     }]
 }
+
+export const getCommentOwnerData = async (userId: string) => {
+    // const token = cookies.get("Jwt Authorization")
+    // try {
+    //     const response = await axios.post(url + "users/username_avatar", {
+    //         id: userId
+    //     }, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization" : `bearer ${token}`
+    //         }
+    //     })
+    //     if(response.status === 200) {
+    //         const username = response.data.username;
+    //         const userAva = response.data.userAva;
+    //         return {
+    //             userName: username, 
+    //             userAva: userAva
+    //         }
+    //     }
+    // } catch (error) {
+        
+    // }
+    return ({
+        username: "r/blabla",
+        userAva: "https://raw.githubusercontent.com/TomerAberbach/imgflip/HEAD/pigeon.png"
+    })
+}
+
+export const getComments = async (id: string, childOf: number): Promise<Comment[]> => {
+    // const token = cookies.get("Jwt Authorization");
+    // try {
+    //     const response = await axios.post(url + "posts/comments", {
+    //         postId: id,
+    //         childOf: childOf
+    //     });
+    //     if (response.status === 200) {
+    //         return response.data;
+    //     }
+    // } catch (error) {
+    //     console.log(error);
+    // }
+    return [
+      {
+        commentId: "1",
+        postId: "asxdcv",
+        authorId: "dhvduhdfv",
+        body: "I hate Biden so much"
+      },
+      {
+        commentId: "4",
+        postId: "asxdcv",
+        authorId: "dhvduhdfv",
+        body: "Let's raid the white house!"
+      },
+      {
+        commentId: "5",
+        postId: "asxdcv",
+        authorId: "dhvduhdfv",
+        body: "Trump should be our supreme leader until he passes away"
+      }
+    ];
+  };
+  

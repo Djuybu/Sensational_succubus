@@ -1,7 +1,7 @@
 import CloseOutlined from "@ant-design/icons/lib/icons/CloseOutlined";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { postNewPost } from "../../items/axios";
+import { postNewPost } from "../../items/axios.ts";
 
 export type Form = {
   id: string;
@@ -39,7 +39,7 @@ const PostForm: React.FC<PostFormProps> = (props: any) => {
   };
   return (
     <>
-      <div className="fixed flex w-screen h-screen bg-slate-700/75 backdrop-blur-sm z-50">
+      <div className="flex w-screen h-screen bg-slate-700/75 backdrop-blur-sm z-50">
         <form
           className="bg-black flex flex-col w-1/3 h-3/5 m-auto p-5"
           onSubmit={handleSubmit(onSubmit)}

@@ -72,8 +72,9 @@ const Subreddit: React.FC<Sub> = (props: any) => {
       )}
       <div className="flex">
         <div className="w-3/4 text-white">
-          Hello
-          <ThreadProp threads={threads} />
+          {threads.map((thread) => {
+            return <ThreadProp thread={thread} />;
+          })}
         </div>
         <div className="w-1/4 text-white">
           {sub.name}

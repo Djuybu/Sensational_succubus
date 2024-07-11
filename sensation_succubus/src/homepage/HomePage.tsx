@@ -301,7 +301,9 @@ const HomePage: React.FC = () => {
             {isSub ? (
               <Subreddit sub={currentSub} />
             ) : (
-              <ThreadProp threads={threads} />
+              threads.map((thread) => {
+                return <ThreadProp thread={thread} />;
+              })
             )}
           </Content>
         </Layout>
