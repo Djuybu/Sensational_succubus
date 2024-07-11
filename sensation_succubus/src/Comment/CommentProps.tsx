@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Comment } from "../items/entity/Comment.ts";
-import { getCommentOwnerData, postReplyComment } from "../items/axios.ts";
+import {
+  getCommentOwnerData,
+  getComments,
+  postReplyComment,
+} from "../items/axios.ts";
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
   CommentOutlined,
+  RetweetOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 
@@ -18,6 +23,8 @@ const CommentProps: React.FC<{ comment: Comment }> = ({ comment }) => {
 
   const [isReplying, setIsReplying] = useState<boolean>(false);
   const [replyComment, setReplyComment] = useState<string>("");
+  const [isDisplayingReply, setIsDisplayingReply] = useState<boolean>(false);
+  const [replies, setReplies] = useState<Comment[]>([]);
 
   useEffect(() => {
     const fetchOwnerData = async () => {
@@ -31,6 +38,18 @@ const CommentProps: React.FC<{ comment: Comment }> = ({ comment }) => {
 
     fetchOwnerData();
   }, [comment]);
+
+  useEffect(() => {
+    if (isDisplayingReply) {
+      const getReply = async () => {
+        try {
+          const comments = await getComments(comment.postId, comment.commentId);
+          setReplies([...comments]);
+        } catch (error) {}
+      };
+      getReply();
+    }
+  }, [isDisplayingReply]);
 
   const updateUpvote = (commentId: any) => {
     // Implement upvote logic here
@@ -60,6 +79,13 @@ const CommentProps: React.FC<{ comment: Comment }> = ({ comment }) => {
       icon: <CommentOutlined style={{ color: "white" }} />,
       onClick: () => {
         setIsReplying(true);
+      },
+    },
+    {
+      key: "Reply",
+      icon: <RetweetOutlined style={{ color: "white" }} />,
+      onClick: () => {
+        setIsDisplayingReply(true);
       },
     },
   ];
@@ -130,6 +156,15 @@ const CommentProps: React.FC<{ comment: Comment }> = ({ comment }) => {
               </div>
             </form>
           )}
+          <div className="ml-8">
+            {isDisplayingReply ? (
+              replies.map((reply) => {
+                return <CommentProps comment={reply} />;
+              })
+            ) : (
+              <></>
+            )}
+          </div>
         </>
       )}
     </div>

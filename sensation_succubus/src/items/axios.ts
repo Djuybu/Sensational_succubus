@@ -197,7 +197,18 @@ export const getCommentOwnerData = async (userId: string) => {
     })
 }
 
-export const getComments = async (id: string, childOf: number): Promise<Comment[]> => {
+export const getComments = async (id: string, childOf: string): Promise<Comment[]> => {
+    if(childOf != "0") {
+        return [
+            {
+                commentId: "2",
+                postId: "asxdcv",
+                authorId: "dhvduhdfv",
+                body: "neither do I",
+            }
+        ]
+
+    }
     // const token = cookies.get("Jwt Authorization");
     // try {
     //     const response = await axios.post(url + "posts/comments", {
