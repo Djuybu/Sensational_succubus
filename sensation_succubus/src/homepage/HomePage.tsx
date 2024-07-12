@@ -22,6 +22,8 @@ import SubForm from "../items/SubForm.tsx";
 import { Sub } from "../items/entity/Sub.ts";
 import { getRecentUpdatedSub } from "../items/axios.ts";
 import Subreddit from "../Subreddit/Subreddit.tsx";
+import Cookies from "universal-cookie";
+import { redirect, useNavigate } from "react-router-dom";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -29,56 +31,6 @@ const { Search } = Input;
 const onSearch = (value: string) => {
   console.log(value);
 };
-
-const headerItem = [
-  {
-    key: "add",
-    icon: <PlusOutlined style={{ color: "white" }} />,
-  },
-  {
-    key: "chat",
-    icon: <CommentOutlined style={{ color: "white" }} />,
-  },
-  {
-    key: "notification",
-    icon: <BellOutlined style={{ color: "white" }} />,
-  },
-];
-
-const avatarItem = [
-  {
-    key: "bio",
-    icon: <img src={demo_ava} className="w-20 rounded-2xl" alt="Avatar" />,
-    label: (
-      <div className="flex flex-col justify-center custom-spacing">
-        <div>r/Demo</div>
-      </div>
-    ),
-  },
-  {
-    key: "logout",
-    icon: <LogoutOutlined style={{ color: "white" }} />,
-    label: "Log out",
-  },
-];
-
-const siderSingleItem = [
-  {
-    key: "Home",
-    label: "Home",
-    icon: <HomeOutlined style={{ color: "white" }} />,
-  },
-  {
-    key: "Trending",
-    label: "Trending",
-    icon: <RiseOutlined style={{ color: "white" }} />,
-  },
-  {
-    key: "History",
-    label: "History",
-    icon: <HistoryOutlined style={{ color: "white" }} />,
-  },
-];
 
 interface SiderSub {
   key: number;
@@ -125,6 +77,59 @@ const HomePage: React.FC = () => {
       downvotes: "1.2k",
     },
   ]);
+
+  const headerItem = [
+    {
+      key: "add",
+      icon: <PlusOutlined style={{ color: "white" }} />,
+    },
+    {
+      key: "chat",
+      icon: <CommentOutlined style={{ color: "white" }} />,
+    },
+    {
+      key: "notification",
+      icon: <BellOutlined style={{ color: "white" }} />,
+    },
+  ];
+
+  const avatarItem = [
+    {
+      key: "bio",
+      icon: <img src={demo_ava} className="w-20 rounded-2xl" alt="Avatar" />,
+      label: (
+        <div className="flex flex-col justify-center custom-spacing">
+          <div>r/Demo</div>
+        </div>
+      ),
+    },
+    {
+      key: "logout",
+      icon: <LogoutOutlined style={{ color: "white" }} />,
+      label: "Log out",
+      onClick: () => {
+        logOut();
+      },
+    },
+  ];
+
+  const siderSingleItem = [
+    {
+      key: "Home",
+      label: "Home",
+      icon: <HomeOutlined style={{ color: "white" }} />,
+    },
+    {
+      key: "Trending",
+      label: "Trending",
+      icon: <RiseOutlined style={{ color: "white" }} />,
+    },
+    {
+      key: "History",
+      label: "History",
+      icon: <HistoryOutlined style={{ color: "white" }} />,
+    },
+  ];
 
   const siderParentConfig = [
     {
@@ -192,6 +197,8 @@ const HomePage: React.FC = () => {
     };
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchRecentUpdatedSub = async () => {
       const recentUpdatedSub = await getRecentUpdatedSub();
@@ -240,6 +247,16 @@ const HomePage: React.FC = () => {
       rules: children.rules,
       imageURL: children.imageURL,
     });
+  };
+
+  const logOut = () => {
+    console.log("Hey");
+
+    const cookies = new Cookies();
+    try {
+      cookies.remove("Jwt Authorization");
+    } catch (error) {}
+    navigate("/login");
   };
   return (
     <>

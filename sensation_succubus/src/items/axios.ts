@@ -22,12 +22,20 @@ export const postLogin = async(username: string, password: string) => {
             "Access-Control-Allow-Origin": "*", //bypassing CORS
         }})
         if(response.status.valueOf() === 200) {
-            const data = response.data.token; //session id
-            return data;
+            const currentDate = new Date();
+            
+            cookies.set("Jwt Authorization", response.data.token, {
+                expires: new Date(currentDate.setDate(currentDate.getDate() + 1000)),
+                path: "/"
+            })
+            return true;
+        } else {
+            throw new Error("Sorry, your username and password conbination does not exist on our system")
         }
         
     } catch (error) {
         console.log(error);
+        return false;
     }
 }
 
@@ -52,7 +60,7 @@ export const postSignup = async (data) => {
 }
 
 export const postAddUpvote = async(id: string) => {
-    const token = cookies.get("jwt Authorization");
+    const token = cookies.get("Jwt Authorization");
     console.log("Token: ", token);
     
     try {
@@ -70,7 +78,7 @@ export const postAddUpvote = async(id: string) => {
 }
 
 export const postAddCommunity = async (data) => {
-    const token = cookies.get("jwt Authorization");
+    const token = cookies.get("Jwt Authorization");
     try {
         const response = await axios.post(url + "sub", {
             name: data.name,

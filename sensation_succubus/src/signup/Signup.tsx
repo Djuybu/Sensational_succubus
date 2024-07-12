@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 interface Signup {
   username: string;
@@ -14,6 +15,8 @@ const Signup = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Signup>();
+
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Signup> = async (data) => {};
   return (
@@ -99,6 +102,14 @@ const Signup = () => {
           {errors.password !== errors.confirmPassword && (
             <div>Your password is not correct!</div>
           )}
+        </div>
+        <div
+          onClick={() => {
+            navigate("/login");
+          }}
+          className="text-white cursor-pointer"
+        >
+          Already have an account? Click to sign in
         </div>
       </form>
     </div>

@@ -6,7 +6,7 @@ import { postLogin } from "../items/axios.ts";
 import { setId } from "../items/redux/session.reducer.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../items/redux/store.ts";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
 
@@ -29,26 +29,17 @@ const Login = () => {
     formState: { errors },
   } = useForm<Login>();
 
-  const cookies = new Cookies();
   const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<Login> = async (data) => {
     try {
-      const response = await postLogin(data.username, data.password);
-      storeToCookie(response);
-      navigate("/");
+      if (await postLogin(data.username, data.password)) {
+        redirect("/");
+      }
     } catch (error) {
       console.log(error);
+      return;
     }
-  };
-
-  const storeToCookie = (token) => {
-    const expires = new Date();
-    expires.setDate(expires.getDate() + 1000);
-    cookies.set("jwt Authorization", token, {
-      expires: expires,
-      path: "/",
-    });
   };
 
   return (
@@ -113,7 +104,12 @@ const Login = () => {
             <div className="text-xs mt-1 cursor-pointer">
               Forgot your password? Click here
             </div>
-            <div className="text-xs mt-1 cursor-pointer">
+            <div
+              onClick={() => {
+                navigate("/signup");
+              }}
+              className="text-xs mt-1 cursor-pointer"
+            >
               Or create new account
             </div>
           </form>
