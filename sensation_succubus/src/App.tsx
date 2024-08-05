@@ -1,7 +1,8 @@
 import React from "react";
 
 import "./App.css";
-import HomePage from "./homepage/HomePage.tsx";
+// import HomePage from "./homepage/HomePage.tsx";
+import HomePage from "./pages/HomePage.tsx"
 import Login from "./Login/Login.tsx";
 import { useDispatch } from "react-redux";
 import Cookies from "universal-cookie";
